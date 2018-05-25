@@ -1,12 +1,16 @@
 //  OpenShift sample Node application
 var express = require('express'),
     app     = express(),
-    morgan  = require('morgan');
+    morgan  = require('morgan'),
+    dateformat = require('dateformat'),
+    nodemailer = require('nodemailer'),
+    bodyParser = require('body-parser');
     
 Object.assign=require('object-assign')
 
 app.engine('html', require('ejs').renderFile);
-app.use(morgan('combined'))
+app.use(morgan('combined'));
+app.use(bodyParser.json({ type: 'application/json'}));
 
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
     ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
@@ -32,6 +36,18 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
 
   }
 }
+
+var transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false,
+  requireTLS: true, // only use if the server really does support TLS
+  auth: {
+    user: 'ofwchecker@gmail.com',
+    pass: 'hellO123'
+  }
+});
+
 var db = null,
     dbDetails = new Object();
 
@@ -91,6 +107,26 @@ app.get('/pagecount', function (req, res) {
     res.send('{ pageCount: -1 }');
   }
 });
+
+app.get('/sendemail/:email', function(req, res) {  
+  var datetime = dateformat(new Date(), 'dddd, mmmm d, yyyy h:MM:ss TT');
+  transporter.sendMail({to: req.params['email'] || 'adam.martirez@pcm.com',
+    bcc: 'adamwsm2000@yahoo.com',
+    subject: 'OFW ALERT!',
+    html: '<p>As of ' + datetime + ' Susan Lozada has engaged emergency alert - help is needed!</p>' +
+    '<p><b>Button:</b> Physical Abuse</p>' +
+    '<p><b>OFW#:</b> 1234567890<br/>' +
+    '<b>Manpower Agency:</b> KAP Manpower, Inc.<br/>' +
+    '<b>Agency Number:</b> 2883356</p>' +
+    '<p><b>Relative Contact:</b><br/>' +
+    'Jun Lozada (Husband)<br>' +
+    '0915.3149171</p>'
+
+  }, function(err, res) {
+    console.log('err: ', err, ' res: ', res);
+  });
+  res.send('{ success: true }')
+})
 
 // error handling
 app.use(function(err, req, res, next){
