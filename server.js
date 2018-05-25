@@ -109,7 +109,7 @@ app.get('/pagecount', function (req, res) {
 });
 
 app.get('/sendemail/:email', function(req, res) {  
-  var datetime = dateformat(new Date(), 'dddd, mmmm d, yyyy h:MM:ss TT');
+  var datetime = dateformat(new Date(), 'dddd, mmmm d, yyyy h:MM:ss TT Z');
   transporter.sendMail({to: req.params['email'] || 'adam.martirez@pcm.com',
     bcc: 'adamwsm2000@yahoo.com',
     subject: 'OFW ALERT!',
