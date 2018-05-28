@@ -113,7 +113,7 @@ app.get('/sendemail/:email', function(req, res) {
   // to: 'aldelm.ferriols@gmail.com',
   transporter.sendMail({
     to: req.params['email'] || 'adam.martirez@pcm.com', 
-    bcc: 'adamwsm2000@yahoo.com,bacani.fie03.ab@gmail.com',
+    bcc: 'adamwsm2000@yahoo.com,bacani.fie04.ab@gmail.com',
     subject: 'OFW ALERT!',
     html: '<p>As of ' + datetime + ' Susan Lozada has engaged emergency alert - help is needed!</p>' +
     '<p><b>Button:</b> Physical Abuse</p>' +
