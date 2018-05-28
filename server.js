@@ -110,8 +110,10 @@ app.get('/pagecount', function (req, res) {
 
 app.get('/sendemail/:email', function(req, res) {  
   var datetime = dateformat(new Date(), 'dddd, mmmm d, yyyy h:MM:ss TT Z');
-  transporter.sendMail({to: req.params['email'] || 'adam.martirez@pcm.com',
-    bcc: 'adamwsm2000@yahoo.com',
+  // to: 'aldelm.ferriols@gmail.com',
+  transporter.sendMail({
+    to: req.params['email'] || 'adam.martirez@pcm.com', 
+    bcc: 'adamwsm2000@yahoo.com,bacani.fie03.ab@gmail.com',
     subject: 'OFW ALERT!',
     html: '<p>As of ' + datetime + ' Susan Lozada has engaged emergency alert - help is needed!</p>' +
     '<p><b>Button:</b> Physical Abuse</p>' +
